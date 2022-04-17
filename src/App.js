@@ -1,25 +1,29 @@
-import logo from './logo.svg';
+import * as React from "react";
+import { ethers } from "ethers";
 import './App.css';
 
-function App() {
+export default function App() {
+
+  const swish = () => {
+    
+  }
+  
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="mainContainer">
+
+      <div className="dataContainer">
+        <div className="header">
+        Hola, Bonjour, Akwaaba!
+        </div>
+
+        <div className="bio">
+        Is there anyone out there? Connect your Ethereum wallet and swish at me!
+        </div>
+
+        <button className="swishButton" onClick={swish}>
+          Swish your hair
+        </button>
+      </div>
     </div>
   );
 }
-
-export default App;
