@@ -1,5 +1,7 @@
 # Getting Started with Create React App
 
+[![Netlify Status](https://api.netlify.com/api/v1/badges/e729d4e8-b08f-4ff7-8e36-ef2059b79a88/deploy-status)](https://app.netlify.com/sites/pat-swish-app/deploys)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
