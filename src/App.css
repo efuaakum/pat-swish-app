@@ -1,8 +1,20 @@
+body { 
+  background-image: url('/public/mike-von-yellow-unsplash.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
 .mainContainer {
   display: flex;
   justify-content: center;
-  width: 100%;
-  margin-top: 64px;
+  width: 90%;
+  margin: 0px auto;
+  margin-top:3em;
+  padding-bottom:3em;
+  background-color: rgba(255,255,255,0.5);
+  border-radius: 25px;
 }
 
 .dataContainer {
@@ -14,14 +26,17 @@
 
 .header {
   text-align: center;
-  font-size: 32px;
-  font-weight: 600;
+  font-size: 3em;
+  font-weight: 700;
+  color:#000;
 }
 
 .bio {
   text-align: center;
-  color: gray;
+  color: #000;
+  font-weight: 500;
   margin-top: 16px;
+  font-size: 1.5em;
 }
 
 .swishButton {
@@ -30,5 +45,6 @@
   padding: 8px;
   border: 0;
   border-radius: 5px;
-  
+  font-size: 1.0em;
+  font-weight: 600;
 }

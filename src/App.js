@@ -89,20 +89,20 @@ const  App = () => {
 
       <div className="dataContainer">
         <div className="header">
-        Hola, Bonjour, Akwaaba!
+        Hola, Bonjour, Hei, Hallo, Ciao, 你好, Akwaaba!
         </div>
 
         <div className="bio">
-        Is there anyone out there? Connect your Ethereum wallet and swish at me!
+        Is there anyone out there? <br/>Connect your Ethereum wallet and swish at me!
         </div>
 
         <button className="swishButton" onClick={swish}>
-          Swish your hair
+          Swish Your Hair 👩🏿‍🦱
         </button>
 
         {!currentAccount && (
           <button className="swishButton" onClick={connectWallet}>
-            Connect Wallet
+            Connect Wallet 👛
           </button>
         )}
       </div>
