@@ -1,9 +1,12 @@
 import React, {useEffect, useState} from "react";
-//import { ethers } from "ethers";
+import { ethers } from "ethers";
 import './App.css';
+import abi from "./utils/PatSwishPortal.json";
 
 const  App = () => {
   const [currentAccount, setCurrentAccount] = useState("");
+  const contractAddress = "0x90BC74d0a74c6771642A6A541C2A68275efeFEb6";
+  const contractABI = abi.abi;
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -52,8 +55,23 @@ const  App = () => {
     checkIfWalletIsConnected();
   }, [])
 
-  const swish = () => {
-    
+  const swish = async () => {
+    try {
+      const { ethereum } = window;
+
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const patSwishPortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+
+        let count = await patSwishPortalContract.getTotalSwishes();
+        console.log("Retrieved total swish count...", count.toNumber());
+      } else {
+        console.log("Ethereum object doesn't exist!");
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   
   return (
