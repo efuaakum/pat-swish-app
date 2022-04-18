@@ -71,9 +71,9 @@ const  App = () => {
         <button className="swishButton" onClick={swish}>
           Swish your hair
         </button>
-        
+
         {!currentAccount && (
-          <button className="waveButton" onClick={connectWallet}>
+          <button className="swishButton" onClick={connectWallet}>
             Connect Wallet
           </button>
         )}
