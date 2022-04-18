@@ -66,6 +66,16 @@ const  App = () => {
 
         let count = await patSwishPortalContract.getTotalSwishes();
         console.log("Retrieved total swish count...", count.toNumber());
+
+        const swishTxn = await patSwishPortalContract.swish();
+        console.log("Mining...", swishTxn.hash);
+
+        await swishTxn.wait();
+        console.log("Mined -- ", swishTxn.hash);
+
+        count = await patSwishPortalContract.getTotalSwishes();
+        console.log("Retrieved total swish count...", count.toNumber());
+
       } else {
         console.log("Ethereum object doesn't exist!");
       }
