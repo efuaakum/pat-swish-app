@@ -5,33 +5,10 @@ import abi from "./utils/PatSwishPortal.json";
 
 const  App = () => {
   const [currentAccount, setCurrentAccount] = useState("");
-  const contractAddress = "0x90BC74d0a74c6771642A6A541C2A68275efeFEb6";
+  const [allSwishes, setAllSwishes] = useState([]);
+  const [message, setMessage] = useState('');
+  const contractAddress = "0xe2277ABB51D7C316dbFADA5DeeD5B7723146680a";
   const contractABI = abi.abi;
-
-  const checkIfWalletIsConnected = async () => {
-    try {
-      const { ethereum } = window;
-
-      if (!ethereum) {
-        console.log("Make sure you have metamask!");
-        return;
-      } else {
-        console.log("We have the ethereum object", ethereum);
-      }
-
-      const accounts = await ethereum.request({ method: "eth_accounts" });
-
-      if (accounts.length !== 0) {
-        const account = accounts[0];
-        console.log("Found an authorized account:", account);
-        setCurrentAccount(account);
-      } else {
-        console.log("No authorized account found")
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
 
   const connectWallet = async () => {
     try {
@@ -51,10 +28,6 @@ const  App = () => {
     }
   }
 
-  useEffect(() => {
-    checkIfWalletIsConnected();
-  }, [])
-
   const swish = async () => {
     try {
       const { ethereum } = window;
@@ -67,7 +40,7 @@ const  App = () => {
         let count = await patSwishPortalContract.getTotalSwishes();
         console.log("Retrieved total swish count...", count.toNumber());
 
-        const swishTxn = await patSwishPortalContract.swish();
+        const swishTxn = await patSwishPortalContract.swish(message);
         console.log("Mining...", swishTxn.hash);
 
         await swishTxn.wait();
@@ -83,6 +56,69 @@ const  App = () => {
       console.log(error);
     }
   }
+
+  const messageUpdate = (event) => {
+    setMessage(event.target.value);
+  }
+
+  useEffect(() => {
+
+    const checkIfWalletIsConnected = async () => {
+      try {
+        const { ethereum } = window;
+  
+        if (!ethereum) {
+          console.log("Make sure you have metamask!");
+          return;
+        } else {
+          console.log("We have the ethereum object", ethereum);
+        }
+  
+        const accounts = await ethereum.request({ method: "eth_accounts" });
+  
+        if (accounts.length !== 0) {
+          const account = accounts[0];
+          console.log("Found an authorized account:", account);
+          setCurrentAccount(account);
+          getAllSwishes();
+        } else {
+          console.log("No authorized account found")
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    
+  const getAllSwishes = async () => {
+    try {
+      const { ethereum } = window;
+      if (ethereum) {
+        const provider = new ethers.providers.Web3Provider(ethereum);
+        const signer = provider.getSigner();
+        const patSwishPortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+  
+        const swishes = await patSwishPortalContract.getAllSwishes();
+  
+        let swishesCleaned = [];
+        swishes.forEach(swish => {
+          swishesCleaned.push({
+            address: swish.swisher,
+            timestamp: new Date(swish.timestamp * 1000),
+            message: swish.message
+          });
+        });
+  
+        setAllSwishes(swishesCleaned);
+      } else {
+        console.log("Ethereum object doesn't exist!")
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+    checkIfWalletIsConnected();
+  }, [contractABI])
   
   return (
     <div className="mainContainer">
@@ -93,9 +129,8 @@ const  App = () => {
         </div>
 
         <div className="bio">
-        Is there anyone out there? <br/>Connect your Ethereum wallet and swish at me!
+        Is there anyone out there? <br/>Connect your Ethereum wallet, say hello and swish at me!
         </div>
-
         <button className="swishButton" onClick={swish}>
           Swish Your Hair 👩🏿‍🦱
         </button>
@@ -105,6 +140,20 @@ const  App = () => {
             Connect Wallet 👛
           </button>
         )}
+
+        <label class="swishText">
+          Message:
+          <input type="text" value={message} onChange={messageUpdate}/>
+        </label>
+
+        {allSwishes.map((swish, index) => {
+          return (
+            <div key={index} style={{ backgroundColor: "OldLace", marginTop: "16px", padding: "8px" }}>
+              <div>Address: {swish.address}</div>
+              <div>Time: {swish.timestamp.toString()}</div>
+              <div>Message: {swish.message}</div>
+            </div>)
+        })}
       </div>
     </div>
   );
