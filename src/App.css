@@ -1,5 +1,5 @@
 body { 
-  background-image: url('/public/mike-von-yellow-unsplash.jpg');
+  background-image: linear-gradient(rgba(255, 255, 255, 0.7), rgba(255, 255, 255, 0.7)),url('/public/mike-von-yellow-unsplash.jpg');
   background-repeat: no-repeat;
   background-attachment: fixed;
   background-position: center;
@@ -13,7 +13,6 @@ body {
   margin: 0px auto;
   margin-top:3em;
   padding-bottom:3em;
-  background-color: rgba(255,255,255,0.7);
   border-radius: 25px;
 }
 
@@ -54,9 +53,10 @@ label.swishText {
   font-size: 1.2em;
 }
 
-label.swishText input{
+label.swishText textarea{
   border:0px;
-  border-radius:25px;
+  border-radius:10px;
   height:150px;
   width:100%;
+  padding-top:15px
 }

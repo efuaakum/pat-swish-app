@@ -130,14 +130,14 @@ const  App = () => {
 
         <div className="bio">
         Is there anyone out there? <br/>Connect your Ethereum wallet, say hello and swish at me!
+        </div>
      
 
         <label class="swishText">
           Message:
-          <input type="text" value={message} onChange={messageUpdate}/>
+          <textarea type="text" value={message} onChange={messageUpdate}/>
         </label>
 
-        </div>
         <button className="swishButton" onClick={swish}>
           Swish Your Hair 👩🏿‍🦱
         </button>
