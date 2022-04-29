@@ -40,7 +40,7 @@ const  App = () => {
         let count = await patSwishPortalContract.getTotalSwishes();
         console.log("Retrieved total swish count...", count.toNumber());
 
-        const swishTxn = await patSwishPortalContract.swish(message);
+        const swishTxn = await patSwishPortalContract.swish(message, { gasLimit: 300000 });
         console.log("Mining...", swishTxn.hash);
 
         await swishTxn.wait();
@@ -89,37 +89,66 @@ const  App = () => {
       }
     }
     
-  const getAllSwishes = async () => {
-    try {
-      const { ethereum } = window;
-      if (ethereum) {
-        const provider = new ethers.providers.Web3Provider(ethereum);
-        const signer = provider.getSigner();
-        const patSwishPortalContract = new ethers.Contract(contractAddress, contractABI, signer);
-  
-        const swishes = await patSwishPortalContract.getAllSwishes();
-  
-        let swishesCleaned = [];
-        swishes.forEach(swish => {
-          swishesCleaned.push({
-            address: swish.swisher,
-            timestamp: new Date(swish.timestamp * 1000),
-            message: swish.message
+    const getAllSwishes = async () => {
+        const { ethereum } = window;
+      try {
+        if (ethereum) {
+          const provider = new ethers.providers.Web3Provider(ethereum);
+          const signer = provider.getSigner();
+          const patSwishPortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+    
+          const swishes = await patSwishPortalContract.getAllSwishes();
+    
+          const swishesCleaned = swishes.map(swish => {
+            return {
+              address: swish.swisher,
+              timestamp: new Date(swish.timestamp * 1000),
+              message: swish.message
+            }
           });
-        });
-  
-        setAllSwishes(swishesCleaned);
-      } else {
-        console.log("Ethereum object doesn't exist!")
+    
+          setAllSwishes(swishesCleaned);
+        } else {
+          console.log("Ethereum object doesn't exist!")
+        }
+      } catch (error) {
+        console.log(error);
       }
-    } catch (error) {
-      console.log(error);
     }
-  }
 
     checkIfWalletIsConnected();
   }, [contractABI])
   
+  useEffect(() => {
+    let patSwishPortalContract;
+  
+    const onNewSwish = (from, timestamp, message) => {
+      console.log("NewSwish", from, timestamp, message);
+      setAllSwishes(prevState => [
+        ...prevState,
+        {
+          address: from,
+          timestamp: new Date(timestamp * 1000),
+          message: message,
+        },
+      ]);
+    };
+  
+    if (window.ethereum) {
+      const provider = new ethers.providers.Web3Provider(window.ethereum);
+      const signer = provider.getSigner();
+  
+      patSwishPortalContract = new ethers.Contract(contractAddress, contractABI, signer);
+      patSwishPortalContract.on("NewSwish", onNewSwish);
+    }
+  
+    return () => {
+      if (patSwishPortalContract) {
+        patSwishPortalContract.off("NewSwish", onNewSwish);
+      }
+    };
+  }, [contractABI]);
+
   return (
     <div className="mainContainer">
 
