@@ -7,7 +7,7 @@ const  App = () => {
   const [currentAccount, setCurrentAccount] = useState("");
   const [allSwishes, setAllSwishes] = useState([]);
   const [message, setMessage] = useState('');
-  const contractAddress = "0xcBe1fE6D6ba4E69f3737595B0B132AC2c89A3D2e";
+  const contractAddress = "0x916C20C1b1BFc470ede10c8c0eeA7746012fb402";
   const contractABI = abi.abi;
 
   const connectWallet = async () => {
