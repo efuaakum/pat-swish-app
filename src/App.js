@@ -119,6 +119,7 @@ const  App = () => {
     checkIfWalletIsConnected();
   }, [contractABI])
   
+  /*
   useEffect(() => {
     let patSwishPortalContract;
   
@@ -148,6 +149,7 @@ const  App = () => {
       }
     };
   }, [contractABI]);
+*/
 
   return (
     <div className="mainContainer">
